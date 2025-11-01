@@ -1,0 +1,2143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yorel Cando Fotógrafo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #008479;
+            --secondary-color: #333333;
+            --accent-color: #ffffff;
+            --gray-color: #A8A9AC;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            font-weight: 500; /* Raleway Medium como fuente principal */
+            box-sizing: border-box;
+        }
+        
+        /* Fuente secundaria - Raleway Light */
+        .font-light {
+            font-weight: 300;
+        }
+        
+        /* Textos descriptivos y párrafos con fuente light */
+        p, .text-description {
+            font-weight: 300;
+        }
+        
+        .hero-section {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            margin-top: 80px;
+        }
+        
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+        
+        .hero-slide.active {
+            opacity: 1;
+        }
+        
+        .hero-slide:nth-child(1) {
+            background-image: url('https://res.cloudinary.com/dczh5rxbe/image/upload/v1748229902/DSC00699_pbcwvy.jpg');
+            background-size: cover;
+            background-position: center 30%; /* Ajustado para mostrar mejor el rostro */
+        }
+        
+        .hero-slide:nth-child(2) {
+            background-image: url('https://res.cloudinary.com/dczh5rxbe/image/upload/v1759425826/DSC01651-Editar_vp6tib.jpg');
+            background-size: cover;
+            background-position: center 25%; /* Centrado en la parte superior para mostrar rostro */
+        }
+        
+        .hero-slide:nth-child(3) {
+            background-image: url('https://res.cloudinary.com/dczh5rxbe/image/upload/v1759425825/DSC05569_q84yjj.jpg');
+            background-size: cover;
+            background-position: center 35%; /* Ajustado para enfocar en el rostro */
+        }
+        
+        .hero-slide:nth-child(4) {
+            background-image: url('https://res.cloudinary.com/dczh5rxbe/image/upload/v1759425825/DSC00306_tcjlvl.jpg');
+            background-size: cover;
+            background-position: center 20%; /* Posicionado para mostrar rostro en la parte superior */
+        }
+        
+        .hero-slide:nth-child(5) {
+            background-image: url('https://res.cloudinary.com/dczh5rxbe/image/upload/v1759425825/DSC07408_1_vfcaoj.jpg');
+            background-size: cover;
+            background-position: center 30%; /* Centrado para mostrar rostro */
+        }
+        
+        .hero-slide:nth-child(6) {
+            background-image: url('https://res.cloudinary.com/dczh5rxbe/image/upload/v1759425825/DSC00054-Editar_evzcjq.jpg');
+            background-size: cover;
+            background-position: center 25%; /* Ajustado para enfocar en rostro */
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente que cubre toda la imagen */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+        
+        .hero-content {
+            max-width: 90%;
+            width: 700px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                background-position: calc(50% - 3cm) center; /* Movido 3cm a la izquierda en móvil */
+            }
+        }
+        
+        .animated-button {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+        
+        .price-tag {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .original-price {
+            position: relative;
+            color: #FF0000;
+            font-size: 0.9em;
+        }
+        
+        .original-price::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 2px;
+            background-color: #FF0000;
+            animation: strikeThrough 1.5s infinite;
+        }
+        
+        @keyframes strikeThrough {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+        
+        .discount-badge {
+            background: linear-gradient(135deg, #FF0000, #FF3333);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            animation: blink 1.5s infinite;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes blink {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        /* Carrusel de portafolio mejorado para mostrar 3 imágenes */
+        .portfolio-carousel {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .portfolio-carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .portfolio-item {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }
+        
+        @media (min-width: 1024px) {
+            .portfolio-item {
+                min-width: 33.333%;
+            }
+        }
+        
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .portfolio-item {
+                min-width: 50%;
+            }
+        }
+        
+        .portfolio-item {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 0.5cm; /* 1cm total spacing (0.5cm each side) */
+        }
+        
+        @media (min-width: 1024px) {
+            .portfolio-item {
+                min-width: 33.333%;
+            }
+        }
+        
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .portfolio-item {
+                min-width: 50%;
+            }
+        }
+        
+        .portfolio-img {
+            height: 400px; /* Tamaño fijo uniforme */
+            width: 100%;
+            max-width: 350px; /* Ancho máximo uniforme */
+            object-fit: cover;
+            object-position: center top; /* Posición por defecto */
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Posicionamiento específico para cada imagen del portafolio */
+        .portfolio-item:nth-child(1) .portfolio-img {
+            object-position: center 20%; /* Enfoque en rostro superior */
+        }
+        
+        .portfolio-item:nth-child(2) .portfolio-img {
+            object-position: center 25%; /* Enfoque en rostro */
+        }
+        
+        .portfolio-item:nth-child(3) .portfolio-img {
+            object-position: center 30%; /* Enfoque en rostro central */
+        }
+        
+        .portfolio-item:nth-child(4) .portfolio-img {
+            object-position: center 15%; /* Enfoque en rostro superior */
+        }
+        
+        .portfolio-item:nth-child(5) .portfolio-img {
+            object-position: center 35%; /* Enfoque en rostro */
+        }
+        
+        .portfolio-item:nth-child(6) .portfolio-img {
+            object-position: center 25%; /* Enfoque en rostro */
+        }
+        
+        .portfolio-item:nth-child(7) .portfolio-img {
+            object-position: center 20%; /* Enfoque en rostro superior */
+        }
+        
+        .portfolio-item:nth-child(8) .portfolio-img {
+            object-position: center 30%; /* Enfoque en rostro de la nueva imagen */
+        }
+        
+        .portfolio-item:nth-child(9) .portfolio-img {
+            object-position: center 25%; /* Enfoque en rostro de la nueva imagen */
+        }
+        
+        .portfolio-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .portfolio-img {
+                height: 300px; /* Tamaño más pequeño en móvil */
+                max-width: 280px;
+            }
+            
+            .portfolio-item {
+                padding: 0 0.3cm; /* Menos espaciado en móvil */
+            }
+        }
+        
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .carousel-arrow:hover {
+            background-color: var(--primary-color);
+            color: var(--accent-color);
+        }
+        
+        .carousel-arrow.prev {
+            left: 20px;
+        }
+        
+        .carousel-arrow.next {
+            right: 20px;
+        }
+        
+        @media (max-width: 640px) {
+            .carousel-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .carousel-arrow.prev {
+                left: 10px;
+            }
+            
+            .carousel-arrow.next {
+                right: 10px;
+            }
+        }
+        
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .carousel-dot {
+            height: 10px;
+            width: 10px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: all 0.6s ease;
+            cursor: pointer;
+        }
+        
+        .carousel-dot.active {
+            background-color: var(--primary-color);
+            transform: scale(1.3);
+            animation: dot-pulse 1.5s infinite;
+        }
+        
+        @keyframes dot-pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 132, 121, 0.7);
+            }
+            70% {
+                transform: scale(1.3);
+                box-shadow: 0 0 0 5px rgba(0, 132, 121, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 132, 121, 0);
+            }
+        }
+        
+        .service-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .package-card {
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .testimonial-carousel {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .testimonial-card {
+            min-width: 100%;
+            padding: 0 0.5cm; /* 1cm total spacing (0.5cm each side) */
+            transition: transform 0.3s ease;
+        }
+        
+        @media (min-width: 768px) {
+            .testimonial-card {
+                min-width: 33.333%;
+            }
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .testimonial-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .testimonial-arrow:hover {
+            background-color: var(--primary-color);
+            color: var(--accent-color);
+        }
+        
+        .testimonial-arrow.prev {
+            left: 10px;
+        }
+        
+        .testimonial-arrow.next {
+            right: 10px;
+        }
+        
+        .testimonial-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .testimonial-dot {
+            height: 8px;
+            width: 8px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: all 0.6s ease;
+            cursor: pointer;
+        }
+        
+        .testimonial-dot.active {
+            background-color: var(--primary-color);
+            transform: scale(1.3);
+        }
+        
+        .star {
+            color: #D1D5DB;
+            transition: color 0.3s ease;
+        }
+        
+        .testimonial-card:hover .star {
+            color: #F59E0B;
+            animation: star-pulse 1s infinite;
+        }
+        
+        @keyframes star-pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .schedule-button {
+            background-color: var(--primary-color);
+            animation: button-pulse 2s infinite;
+        }
+        
+        @keyframes button-pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 132, 121, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(0, 132, 121, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 132, 121, 0);
+            }
+        }
+        
+        .social-icon {
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-3px);
+            color: var(--primary-color);
+        }
+        
+        /* Línea gráfica con colores */
+        .section-divider {
+            height: 5px;
+            background: linear-gradient(to right, var(--secondary-color), var(--primary-color), var(--accent-color));
+            margin: 0 auto;
+            width: 150px;
+            border-radius: 5px;
+        }
+        
+        /* Nuevo estilo para el check moderno */
+        .check-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background-color: #008479;
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .check-icon::before {
+            content: "";
+            width: 8px;
+            height: 4px;
+            border-left: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(-45deg) translate(0, -1px);
+            display: block;
+        }
+        
+        @keyframes check-animation {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .package-card:hover .check-icon {
+            animation: check-animation 0.5s ease;
+        }
+        
+        /* Estilo para el porcentaje de descuento */
+        .discount-percentage {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #FF0000, #FF3333);
+            color: white;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            box-shadow: 0 2px 4px rgba(255,0,0,0.3);
+            animation: pulse-discount 2s infinite;
+            font-size: 0.9em;
+        }
+        
+        @keyframes pulse-discount {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 2px 4px rgba(255,0,0,0.3);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 3px 6px rgba(255,0,0,0.4);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 2px 4px rgba(255,0,0,0.3);
+            }
+        }
+        
+        /* Liquid Glass Header Effect */
+        .liquid-glass-header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 4px 16px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            margin: 0 4px;
+        }
+
+        /* Liquid Glass Button Effect */
+        .liquid-glass-button {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 4px 16px rgba(0, 132, 121, 0.2),
+                0 2px 8px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .liquid-glass-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 50%, 
+                rgba(255, 255, 255, 0.1) 100%);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        .liquid-glass-button::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.4) 50%, 
+                transparent 100%);
+            filter: blur(0.5px);
+            border-radius: inherit;
+        }
+
+        .liquid-glass-button:hover {
+            box-shadow: 
+                0 6px 20px rgba(0, 132, 121, 0.3),
+                0 3px 12px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        .liquid-glass-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 50%, 
+                rgba(255, 255, 255, 0.1) 100%);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+        
+        .liquid-glass-header::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.6) 50%, 
+                transparent 100%);
+            filter: blur(0.5px);
+            border-radius: inherit;
+        }
+        
+        /* Adjust hero section to account for fixed header */
+        .hero-section {
+            margin-top: 100px;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            backdrop-filter: blur(5px);
+        }
+
+        .error-field {
+            border-color: #EF4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+        }
+
+        .btn-enabled {
+            background-color: #008479 !important;
+            cursor: pointer !important;
+        }
+
+        .btn-enabled:hover {
+            background-color: #006b61 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="fixed top-0 left-0 right-0 z-50 py-4 px-6 flex justify-center">
+        <div class="liquid-glass-header flex justify-between items-center py-3 px-8 rounded-2xl max-w-4xl w-full">
+            <div class="flex items-center">
+                <!-- Menú hamburguesa para móvil -->
+                <button id="mobileMenuBtn" class="md:hidden mr-3 text-gray-700 hover:text-[#008479] transition-colors duration-300">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1760455011/VERSION_CORTA_PNG_-_YOREL_CANDO_Mesa_de_trabajo_1_kqjgtw.png" alt="Logo" class="h-12 drop-shadow-lg">
+            </div>
+            <a href="https://cal.com/yorel-cando-uxvf4o/reunion-de-60-min" target="_blank" class="bg-[#008479] hover:bg-[#006b61] text-white font-medium py-2 px-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg">
+                Agendar Reunión
+            </a>
+        </div>
+    </header>
+
+    <!-- MENÚ MÓVIL -->
+    <div id="mobileMenu" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden" style="z-index: 60;">
+        <div class="bg-white w-80 h-full shadow-xl transform -translate-x-full transition-transform duration-300" id="mobileMenuPanel">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="text-xl font-bold text-gray-800">Nuestros Servicios</h3>
+                    <button id="closeMobileMenu" class="text-gray-500 hover:text-gray-700 text-2xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <nav class="space-y-4">
+                    <button onclick="navigateToService('sesiones')" class="w-full text-left p-4 rounded-lg hover:bg-gray-50 transition-colors duration-300 border border-gray-200">
+                        <div class="flex items-center">
+                            <i class="fas fa-camera text-[#008479] mr-3 text-lg"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Sesiones Fotográficas</h4>
+                                <p class="text-sm text-gray-500">Retratos y sesiones personalizadas</p>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button onclick="navigateToService('cobertura')" class="w-full text-left p-4 rounded-lg hover:bg-gray-50 transition-colors duration-300 border border-gray-200">
+                        <div class="flex items-center">
+                            <i class="fas fa-users text-[#008479] mr-3 text-lg"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Cobertura Fotográfica</h4>
+                                <p class="text-sm text-gray-500">Eventos y celebraciones</p>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button onclick="navigateToService('fotovideo')" class="w-full text-left p-4 rounded-lg hover:bg-gray-50 transition-colors duration-300 border border-gray-200">
+                        <div class="flex items-center">
+                            <i class="fas fa-video text-[#008479] mr-3 text-lg"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Fotografía y Video</h4>
+                                <p class="text-sm text-gray-500">Cobertura completa audiovisual</p>
+                            </div>
+                        </div>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero-section">
+        <div class="hero-background">
+            <div class="hero-slide active"></div>
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+        </div>
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <div class="text-center">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8">
+                        Tus mejores momentos ¿vivirán solo en tu memoria?
+                    </h2>
+                    <button onclick="scrollToServices()" class="animated-button bg-white text-gray-800 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-300">
+                        Quiero saber más
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIOS SECTION -->
+    <section id="servicios" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4">Nuestros Servicios</h2>
+            <div class="section-divider mb-12"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Servicio 1 -->
+                <div class="service-card">
+                    <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748987587/DSC09936_twtfpz.jpg" alt="Sesiones fotográficas" class="w-full h-80 object-cover object-center rounded-lg shadow-lg">
+                    <div class="pt-6">
+                        <h3 class="text-xl font-bold mb-4 text-center">Sesiones fotográficas</h3>
+                        <button onclick="showPackages('sesiones')" class="liquid-glass-button bg-[#008479] hover:bg-[#006b61] text-white font-medium py-2 px-4 rounded-md transition duration-300 w-full">
+                            Ver paquetes
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Servicio 2 -->
+                <div class="service-card">
+                    <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748988030/pexels-shtefutsa-30052274_e4fxxq.jpg" alt="Cobertura fotográfica" class="w-full h-80 object-cover object-center rounded-lg shadow-lg">
+                    <div class="pt-6">
+                        <h3 class="text-xl font-bold mb-4 text-center">Cobertura fotográfica</h3>
+                        <button onclick="showPackages('cobertura')" class="liquid-glass-button bg-[#008479] hover:bg-[#006b61] text-white font-medium py-2 px-4 rounded-md transition duration-300 w-full">
+                            Ver paquetes
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Servicio 3 -->
+                <div class="service-card">
+                    <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748987877/pexels-aysenuryilmaz-18220883_wachqm.jpg" alt="Fotografía y video" class="w-full h-80 object-cover object-center rounded-lg shadow-lg">
+                    <div class="pt-6">
+                        <h3 class="text-xl font-bold mb-4 text-center">Fotografía y video</h3>
+                        <button onclick="showPackages('fotovideo')" class="liquid-glass-button bg-[#008479] hover:bg-[#006b61] text-white font-medium py-2 px-4 rounded-md transition duration-300 w-full">
+                            Ver paquetes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAQUETES SECTION (Initially hidden) -->
+    <section id="paquetes-sesiones" class="py-16 bg-gray-100 hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-3xl font-bold">Paquetes de Sesiones Fotográficas</h2>
+                <button onclick="hidePackages()" class="text-[#008479] hover:text-[#006b61] font-medium flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Volver a servicios
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Plan Mini -->
+                <div class="package-card bg-white rounded-lg overflow-hidden shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-2">Plan Mini</h3>
+                    <div class="mb-6">
+                        <span class="original-price text-red-600 line-through mr-2">$100</span>
+                        <span class="text-2xl font-bold">$70</span>
+                        <span class="discount-percentage">-30%</span>
+                    </div>
+                    <ul class="mb-4 space-y-3">
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>6 fotos digitales editadas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>45 minutos de sesión (exterior)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Galería digital</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Iluminación y dirección de poses</span>
+                        </li>
+                    </ul>
+                    <p class="text-xs text-gray-500 mb-6">(Aplican restricciones)</p>
+                    <button onclick="abrirModal('Plan Mini - Sesiones Fotográficas', '$70')" class="block w-full bg-[#008479] hover:bg-[#006b61] text-white font-medium py-3 px-4 rounded-md text-center transition duration-300">
+                        Reservar
+                    </button>
+                </div>
+                
+                <!-- Plan Básico -->
+                <div class="package-card bg-white rounded-lg overflow-hidden shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-2">Plan Básico</h3>
+                    <div class="mb-6">
+                        <span class="original-price text-red-600 line-through mr-2">$176</span>
+                        <span class="text-2xl font-bold">$150</span>
+                        <span class="discount-percentage">-15%</span>
+                    </div>
+                    <ul class="mb-8 space-y-3">
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>12 fotos digitales editadas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>60 minutos de sesión (exterior)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Book Mini Impreso</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Iluminación profesional</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Dirección de poses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Cobertura en todo Ecuador (Aplican costos adicionales según ubicación)</span>
+                        </li>
+                    </ul>
+                    <button onclick="abrirModal('Plan Básico - Sesiones Fotográficas', '$150')" class="block w-full bg-[#008479] hover:bg-[#006b61] text-white font-medium py-3 px-4 rounded-md text-center transition duration-300">
+                        Reservar
+                    </button>
+                </div>
+                
+                <!-- Plan Premium -->
+                <div class="package-card bg-white rounded-lg overflow-hidden shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-2">Plan Premium</h3>
+                    <div class="mb-6">
+                        <span class="original-price text-red-600 line-through mr-2">$440</span>
+                        <span class="text-2xl font-bold">$330</span>
+                        <span class="discount-percentage">-25%</span>
+                    </div>
+                    <ul class="mb-4 space-y-3">
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>15 fotos digitales editadas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Book Impreso</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Iluminación Profesional</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Dirección de poses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Locación Incluida (3px)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Opción a Caballo</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Cobertura en todo Ecuador (Aplican costos adicionales según ubicación)</span>
+                        </li>
+                    </ul>
+                    <p class="text-xs text-gray-500 mb-6">(Aplican restricciones)</p>
+                    <button onclick="abrirModal('Plan Premium - Sesiones Fotográficas', '$330')" class="block w-full bg-[#4B8294] hover:bg-[#3a6a7a] text-white font-medium py-3 px-4 rounded-md text-center transition duration-300">
+                        Reservar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="text-lg mb-4">¿Necesitas un paquete personalizado? Podemos crear un plan a medida para tus necesidades específicas</p>
+                <a href="https://yorelcandofotografo.com/personalizarpaquete" class="inline-block bg-[#333333] hover:bg-gray-700 text-white font-medium py-3 px-8 rounded-md text-center transition duration-300">
+                    Personalizar paquete
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAQUETES COBERTURA FOTOGRÁFICA -->
+    <section id="paquetes-cobertura" class="py-16 bg-gray-100 hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-3xl font-bold">Paquetes de Cobertura Fotográfica</h2>
+                <button onclick="hidePackages()" class="text-[#008479] hover:text-[#006b61] font-medium flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Volver a servicios
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Plan Básico -->
+                <div class="package-card bg-white rounded-lg overflow-hidden shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-2">Plan Básico</h3>
+                    <div class="mb-6">
+                        <span class="original-price text-red-600 line-through mr-2">$412</span>
+                        <span class="text-2xl font-bold">$350</span>
+                        <span class="discount-percentage">-15%</span>
+                    </div>
+                    <ul class="mb-8 space-y-3">
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>3 horas de cobertura</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Asesoría y dirección de poses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>80 fotos digitales editadas en HD (entrega digital, sin marca de agua)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 álbum fotográfico personalizado</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Iluminación profesional</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Cobertura en todo Ecuador (Aplican costos adicionales según ubicación)</span>
+                        </li>
+                    </ul>
+                    <button onclick="abrirModal('Plan Básico - Cobertura Fotográfica', '$350')" class="block w-full bg-[#4B8294] hover:bg-[#3a6a7a] text-white font-medium py-3 px-4 rounded-md text-center transition duration-300">
+                        Reservar
+                    </button>
+                </div>
+                
+                <!-- Plan Estándar -->
+                <div class="package-card bg-white rounded-lg overflow-hidden shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-2">Plan Estándar</h3>
+                    <div class="mb-6">
+                        <span class="original-price text-red-600 line-through mr-2">$560</span>
+                        <span class="text-2xl font-bold">$450</span>
+                        <span class="discount-percentage">-20%</span>
+                    </div>
+                    <ul class="mb-8 space-y-3">
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>5 horas de cobertura</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Asesoría y dirección de poses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>200 fotos digitales editadas en HD (entrega digital, sin marca de agua)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 álbum fotográfico personalizado</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 ampliación 40x60 cm en bastidor</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Iluminación profesional</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Cobertura en todo Ecuador (Aplican costos adicionales según ubicación)</span>
+                        </li>
+                    </ul>
+                    <button onclick="abrirModal('Plan Estándar - Cobertura Fotográfica', '$450')" class="block w-full bg-[#4B8294] hover:bg-[#3a6a7a] text-white font-medium py-3 px-4 rounded-md text-center transition duration-300">
+                        Reservar
+                    </button>
+                </div>
+                
+                <!-- Plan Premium -->
+                <div class="package-card bg-white rounded-lg overflow-hidden shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-2">Plan Premium</h3>
+                    <div class="mb-6">
+                        <span class="original-price text-red-600 line-through mr-2">$894</span>
+                        <span class="text-2xl font-bold">$760</span>
+                        <span class="discount-percentage">-15%</span>
+                    </div>
+                    <ul class="mb-8 space-y-3">
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>7 horas de cobertura</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Asesoría y dirección de poses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>300 fotos digitales editadas en HD (entrega digital, sin marca de agua)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Fotolibro 25x25 Premium</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Caja photobook</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 ampliación 50x70 cm en bastidor</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Iluminación profesional</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Cobertura en todo Ecuador (Aplican costos adicionales según ubicación)</span>
+                        </li>
+                    </ul>
+                    <button onclick="abrirModal('Plan Premium - Cobertura Fotográfica', '$760')" class="block w-full bg-[#4B8294] hover:bg-[#3a6a7a] text-white font-medium py-3 px-4 rounded-md text-center transition duration-300">
+                        Reservar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAQUETES FOTOGRAFÍA Y VIDEO -->
+    <section id="paquetes-fotovideo" class="py-16 bg-gray-100 hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-3xl font-bold">Paquetes de Fotografía y Video</h2>
+                <button onclick="hidePackages()" class="text-[#008479] hover:text-[#006b61] font-medium flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Volver a servicios
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Plan Básico -->
+                <div class="package-card bg-white rounded-lg overflow-hidden shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-2">Plan Básico</h3>
+                    <div class="mb-6">
+                        <span class="original-price text-red-600 line-through mr-2">$800</span>
+                        <span class="text-2xl font-bold">$640</span>
+                        <span class="discount-percentage">-20%</span>
+                    </div>
+                    <ul class="mb-8 space-y-3">
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>4 horas de cobertura</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Asesoría y dirección de poses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>100 fotos digitales editadas en HD (entrega digital, sin marca de agua)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Galería digital</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 álbum fotográfico personalizado</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 video highlight</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 ampliación 20x30 cm en bastidor</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Iluminación profesional</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Cobertura en todo Ecuador (Aplican costos adicionales según ubicación)</span>
+                        </li>
+                    </ul>
+                    <button onclick="abrirModal('Plan Básico - Fotografía y Video', '$640')" class="block w-full bg-[#4B8294] hover:bg-[#3a6a7a] text-white font-medium py-3 px-4 rounded-md text-center transition duration-300">
+                        Reservar
+                    </button>
+                </div>
+                
+                <!-- Plan Estándar -->
+                <div class="package-card bg-white rounded-lg overflow-hidden shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-2">Plan Estándar</h3>
+                    <div class="mb-6">
+                        <span class="original-price text-red-600 line-through mr-2">$1187.50</span>
+                        <span class="text-2xl font-bold">$950</span>
+                        <span class="discount-percentage">-20%</span>
+                    </div>
+                    <ul class="mb-8 space-y-3">
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>5 horas de cobertura</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Asesoría y dirección de poses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>200 fotos digitales editadas en HD (entrega digital, sin marca de agua)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Galería digital</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 álbum fotográfico personalizado</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 video (20–30 min editado)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 ampliación 50x70 cm en bastidor</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Iluminación profesional</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Cobertura en todo Ecuador (Aplican costos adicionales según ubicación)</span>
+                        </li>
+                    </ul>
+                    <button onclick="abrirModal('Plan Estándar - Fotografía y Video', '$950')" class="block w-full bg-[#4B8294] hover:bg-[#3a6a7a] text-white font-medium py-3 px-4 rounded-md text-center transition duration-300">
+                        Reservar
+                    </button>
+                </div>
+                
+                <!-- Plan Premium -->
+                <div class="package-card bg-white rounded-lg overflow-hidden shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-2">Plan Premium</h3>
+                    <div class="mb-6">
+                        <span class="original-price text-red-600 line-through mr-2">$2062.50</span>
+                        <span class="text-2xl font-bold">$1650</span>
+                        <span class="discount-percentage">-20%</span>
+                    </div>
+                    <ul class="mb-8 space-y-3">
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>7 horas de cobertura</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Asesoría y dirección de poses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>300 fotos digitales editadas en HD (entrega digital, sin marca de agua)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Galería digital</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 álbum fotográfico personalizado (premium)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Caja de presentación para el photobook</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 video (40–60 min editado)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 video highlight</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>1 ampliación 60x80 cm en bastidor</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Iluminación profesional</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="check-icon"></span>
+                            <span>Cobertura en todo Ecuador (Aplican costos adicionales según ubicación)</span>
+                        </li>
+                    </ul>
+                    <button onclick="abrirModal('Plan Premium - Fotografía y Video', '$1650')" class="block w-full bg-[#4B8294] hover:bg-[#3a6a7a] text-white font-medium py-3 px-4 rounded-md text-center transition duration-300">
+                        Reservar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTAFOLIO SECTION -->
+    <section id="portafolio" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4">Portafolio</h2>
+            <div class="section-divider mb-12"></div>
+            
+            <div class="portfolio-carousel relative max-w-6xl mx-auto">
+                <!-- Flechas de navegación -->
+                <div class="carousel-arrow prev" onclick="moveSlide(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="carousel-arrow next" onclick="moveSlide(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                
+                <div class="portfolio-carousel-inner">
+                    <div class="portfolio-item">
+                        <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748987583/DSC09187-Editar_hvg8ym.jpg" alt="Portafolio 1" class="portfolio-img">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748987583/DSC00109-Editar_yv19vs.jpg" alt="Portafolio 2" class="portfolio-img">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748987583/SESION-4_mkat7q.jpg" alt="Portafolio 3" class="portfolio-img">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748987589/MI_CUMPLEA%C3%91OS-5_jbz7fk.jpg" alt="Portafolio 4" class="portfolio-img">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748229900/DSC00363__2_utkbfg.jpg" alt="Portafolio 5" class="portfolio-img">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748229900/DSC00628-Editar-Editar_xykf2i.jpg" alt="Portafolio 6" class="portfolio-img">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748229900/DSC00679-Editar_trs3kv.jpg" alt="Portafolio 7" class="portfolio-img">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1759431384/DSC09997__2_-Editar_koxohi.jpg" alt="Portafolio 8" class="portfolio-img">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1759431384/DSC01548-Editar_frborv.jpg" alt="Portafolio 9" class="portfolio-img">
+                    </div>
+                </div>
+                
+                <div class="carousel-dots">
+                    <span class="carousel-dot active" onclick="currentSlide(0)"></span>
+                    <span class="carousel-dot" onclick="currentSlide(1)"></span>
+                    <span class="carousel-dot" onclick="currentSlide(2)"></span>
+                    <span class="carousel-dot" onclick="currentSlide(3)"></span>
+                    <span class="carousel-dot" onclick="currentSlide(4)"></span>
+                    <span class="carousel-dot" onclick="currentSlide(5)"></span>
+                    <span class="carousel-dot" onclick="currentSlide(6)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONOCE A TU FOTÓGRAFO -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4">Conoce a tu Fotógrafo</h2>
+            <div class="section-divider mb-12"></div>
+            
+            <div class="flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto">
+                <div class="w-48 h-48 rounded-full overflow-hidden shadow-xl border-4 border-white flex-shrink-0">
+                    <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1759429536/Perfil_pisieset_m1kixn.jpg" alt="Yorel Cando" class="w-full h-full object-cover">
+                </div>
+                
+                <div class="text-gray-700 text-lg leading-relaxed">
+                    <p class="mb-4">Hola, soy Yorel. Muchas veces escucho la frase: "Ojalá me hubiera tomado una foto ese día". Y es que la vida se va tan rápido que muchas veces dejamos pasar momentos que merecen ser recordados.</p>
+                    
+                    <p class="mb-4">Mi trabajo como fotógrafo va más allá de solo capturar imágenes; se trata de inmortalizar emociones, risas, abrazos y detalles que en pocos años se vuelven tesoros.</p>
+                    
+                    <p>Por eso, junto a mi equipo, trabajamos con pasión y sensibilidad para entregarte fotografías que te conmuevan, que hablen por sí solas y que puedas mirar una y otra vez sin cansarte.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESEÑAS DE CLIENTES -->
+    <section id="testimonials" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4">Lo que dicen nuestros clientes</h2>
+            <div class="section-divider mb-12"></div>
+            
+            <div class="testimonial-carousel relative max-w-5xl mx-auto">
+                <!-- Flechas de navegación para testimonios -->
+                <div class="testimonial-arrow prev" onclick="moveTestimonial(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="testimonial-arrow next" onclick="moveTestimonial(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                
+                <div class="testimonial-inner">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card">
+                        <div class="bg-white rounded-lg shadow-lg p-8 h-full">
+                            <div class="flex justify-center mb-6">
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                            </div>
+                            
+                            <p class="text-gray-700 text-lg leading-relaxed mb-8 text-center italic">
+                                "Soy de esas personas que se incomodan frente a la cámara, pero su forma de trabajar hizo que todo fluyera. Reímos, nos divertimos y al final... las fotos quedaron hermosas. Me encantó el resultado, y sobre todo la experiencia."
+                            </p>
+                            
+                            <div class="flex items-center justify-center">
+                                <div class="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-gray-200">
+                                    <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748990575/pexels-alvincaal-2851881_rq3gv4.jpg" alt="Ximena R." class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Ximena R.</h4>
+                                    <p class="text-gray-500 text-sm">Sesión Individual</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card">
+                        <div class="bg-white rounded-lg shadow-lg p-8 h-full">
+                            <div class="flex justify-center mb-6">
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                            </div>
+                            
+                            <p class="text-gray-700 text-lg leading-relaxed mb-8 text-center italic">
+                                "Desde el primer momento sentí confianza. Yorel y su equipo tienen una manera tan cálida y profesional de trabajar que hacen todo más fácil. Las fotos de nuestra boda nos hicieron llorar de emoción. Gracias por tanto corazón en su trabajo."
+                            </p>
+                            
+                            <div class="flex items-center justify-center">
+                                <div class="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-gray-200">
+                                    <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1759430128/pexels-helenalopes-2055222_gzuail.jpg" alt="Javier y Luna" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Javier y Luna</h4>
+                                    <p class="text-gray-500 text-sm">Boda</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card">
+                        <div class="bg-white rounded-lg shadow-lg p-8 h-full">
+                            <div class="flex justify-center mb-6">
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                                <span class="star text-2xl text-yellow-400"><i class="fas fa-star"></i></span>
+                            </div>
+                            
+                            <p class="text-gray-700 text-lg leading-relaxed mb-8 text-center italic">
+                                "La experiencia fue increíble de principio a fin. Las fotos capturaron exactamente lo que queríamos y más. Definitivamente volveré para futuros eventos y recomendaré a todos mis amigos."
+                            </p>
+                            
+                            <div class="flex items-center justify-center">
+                                <div class="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-gray-200">
+                                    <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1748990570/pexels-helenalopes-27086886_yhekdf.jpg" alt="Mishell N." class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Mishell N.</h4>
+                                    <p class="text-gray-500 text-sm">Evento Familiar</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-dots mt-6">
+                    <span class="testimonial-dot active" onclick="currentTestimonial(0)"></span>
+                    <span class="testimonial-dot" onclick="currentTestimonial(1)"></span>
+                    <span class="testimonial-dot" onclick="currentTestimonial(2)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AGENDAR CITA -->
+    <section id="schedule" class="py-16 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Agendar reunión</h2>
+            <div class="section-divider mb-8"></div>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Hablemos de tu sesión. Agenda una reunión y creemos recuerdos a tu estilo.</p>
+            <a href="https://cal.com/yorel-cando-uxvf4o/reunion-de-60-min" target="_blank" class="schedule-button inline-block text-white font-semibold py-3 px-8 rounded-md text-lg transition duration-300">
+                Agendar ahora
+            </a>
+            <div class="mt-8">
+                <img src="https://res.cloudinary.com/dczh5rxbe/image/upload/v1760143546/VERSION_HORIZONTAL_NEGRO_PNG_Mesa_de_trabajo_1_f1qyof.png" alt="Yorel Cando Fotógrafo" class="h-10 mx-auto drop-shadow-lg">
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DE RESERVA -->
+    <div id="reservaModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4 modal-overlay">
+        <div class="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Reservar Paquete</h3>
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-2xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div id="paqueteSeleccionado" class="bg-gray-50 p-4 rounded-lg mb-6">
+                    <h4 class="font-bold text-lg mb-2" id="nombrePaquete"></h4>
+                    <p class="text-gray-600" id="precioPaquete"></p>
+                </div>
+                
+                <form id="reservaForm" class="space-y-4">
+                    <div>
+                        <label for="nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo *</label>
+                        <input type="text" id="nombre" name="nombre" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008479] focus:border-transparent">
+                        <span class="error-message text-red-500 text-sm hidden">Este campo es obligatorio</span>
+                    </div>
+                    
+                    <div>
+                        <label for="correo" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico *</label>
+                        <input type="email" id="correo" name="correo" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008479] focus:border-transparent">
+                        <span class="error-message text-red-500 text-sm hidden">Ingresa un correo válido</span>
+                    </div>
+                    
+                    <div>
+                        <label for="fechaEvento" class="block text-sm font-medium text-gray-700 mb-1">Fecha del evento *</label>
+                        <input type="date" id="fechaEvento" name="fechaEvento" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008479] focus:border-transparent">
+                        <span class="error-message text-red-500 text-sm hidden">Selecciona una fecha</span>
+                    </div>
+                    
+                    <div>
+                        <label for="tipoEvento" class="block text-sm font-medium text-gray-700 mb-1">Tipo de evento *</label>
+                        <select id="tipoEvento" name="tipoEvento" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008479] focus:border-transparent">
+                            <option value="">Selecciona el tipo de evento</option>
+                            <option value="Boda">Boda</option>
+                            <option value="Quinceañera">Quinceañera</option>
+                            <option value="Cumpleaños">Cumpleaños</option>
+                            <option value="Bautizo">Bautizo</option>
+                            <option value="Graduación">Graduación</option>
+                            <option value="Sesión familiar">Sesión familiar</option>
+                            <option value="Sesión de pareja">Sesión de pareja</option>
+                            <option value="Sesión individual">Sesión individual</option>
+                            <option value="Evento corporativo">Evento corporativo</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                        <span class="error-message text-red-500 text-sm hidden">Selecciona el tipo de evento</span>
+                    </div>
+                    
+                    <div>
+                        <label for="ciudad" class="block text-sm font-medium text-gray-700 mb-1">Ciudad *</label>
+                        <input type="text" id="ciudad" name="ciudad" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008479] focus:border-transparent" placeholder="Ej: Quito, Guayaquil, Cuenca">
+                        <span class="error-message text-red-500 text-sm hidden">Ingresa la ciudad del evento</span>
+                    </div>
+                    
+                    <div class="pt-4">
+                        <button type="button" id="consultarBtn" onclick="enviarWhatsApp()" disabled class="w-full bg-gray-400 text-white font-medium py-3 px-4 rounded-md transition duration-300 cursor-not-allowed">
+                            Consultar disponibilidad
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#333333] text-white py-10">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-8 mb-6">
+                <a href="https://www.facebook.com/profile.php?id=" target="_blank" class="social-icon text-3xl">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="https://www.instagram.com/yorelcando_ph/" target="_blank" class="social-icon text-3xl">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+            <p class="text-gray-400">© 2025 Yorel Cando Fotógrafo. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales para el modal
+        let paqueteSeleccionado = '';
+        let precioSeleccionado = '';
+
+        // Scroll to services section
+        function scrollToServices() {
+            document.getElementById('servicios').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Show packages based on service type
+        function showPackages(type) {
+            // Hide all package sections
+            document.getElementById('paquetes-sesiones').classList.add('hidden');
+            document.getElementById('paquetes-cobertura').classList.add('hidden');
+            document.getElementById('paquetes-fotovideo').classList.add('hidden');
+            
+            // Show the selected package section
+            if (type === 'sesiones') {
+                document.getElementById('paquetes-sesiones').classList.remove('hidden');
+            } else if (type === 'cobertura') {
+                document.getElementById('paquetes-cobertura').classList.remove('hidden');
+            } else if (type === 'fotovideo') {
+                document.getElementById('paquetes-fotovideo').classList.remove('hidden');
+            }
+            
+            // Scroll to the package section
+            if (type === 'sesiones') {
+                document.getElementById('paquetes-sesiones').scrollIntoView({ behavior: 'smooth' });
+            } else if (type === 'cobertura') {
+                document.getElementById('paquetes-cobertura').scrollIntoView({ behavior: 'smooth' });
+            } else if (type === 'fotovideo') {
+                document.getElementById('paquetes-fotovideo').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // Hide packages and show services
+        function hidePackages() {
+            document.getElementById('paquetes-sesiones').classList.add('hidden');
+            document.getElementById('paquetes-cobertura').classList.add('hidden');
+            document.getElementById('paquetes-fotovideo').classList.add('hidden');
+            document.getElementById('servicios').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Funciones del modal de reserva
+        function abrirModal(nombrePaquete, precio) {
+            paqueteSeleccionado = nombrePaquete;
+            precioSeleccionado = precio;
+            
+            document.getElementById('nombrePaquete').textContent = nombrePaquete;
+            document.getElementById('precioPaquete').textContent = precio;
+            document.getElementById('reservaModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+            
+            // Reset form
+            document.getElementById('reservaForm').reset();
+            clearErrors();
+            updateSubmitButton();
+        }
+
+        function closeModal() {
+            document.getElementById('reservaModal').classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Restaurar scroll del body
+            
+            // Reset form
+            document.getElementById('reservaForm').reset();
+            clearErrors();
+            updateSubmitButton();
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        document.getElementById('reservaModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Validación en tiempo real
+        function setupFormValidation() {
+            const fields = ['nombre', 'correo', 'fechaEvento', 'tipoEvento', 'ciudad'];
+            
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                field.addEventListener('input', validateField);
+                field.addEventListener('change', validateField);
+                field.addEventListener('blur', validateField);
+            });
+        }
+
+        function validateField(e) {
+            const field = e.target;
+            const fieldId = field.id;
+            const value = field.value.trim();
+            const errorElement = field.nextElementSibling;
+            
+            let isValid = true;
+            let errorMessage = '';
+
+            // Validaciones específicas
+            switch(fieldId) {
+                case 'nombre':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'Este campo es obligatorio';
+                    }
+                    break;
+                case 'correo':
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'Este campo es obligatorio';
+                    } else if (!emailRegex.test(value)) {
+                        isValid = false;
+                        errorMessage = 'Ingresa un correo válido';
+                    }
+                    break;
+                case 'fechaEvento':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'Selecciona una fecha';
+                    } else {
+                        const selectedDate = new Date(value);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        if (selectedDate < today) {
+                            isValid = false;
+                            errorMessage = 'La fecha debe ser futura';
+                        }
+                    }
+                    break;
+                case 'tipoEvento':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'Selecciona el tipo de evento';
+                    }
+                    break;
+                case 'ciudad':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'Ingresa la ciudad del evento';
+                    }
+                    break;
+            }
+
+            // Mostrar/ocultar error
+            if (isValid) {
+                field.classList.remove('error-field');
+                errorElement.classList.add('hidden');
+            } else {
+                field.classList.add('error-field');
+                errorElement.textContent = errorMessage;
+                errorElement.classList.remove('hidden');
+            }
+
+            updateSubmitButton();
+            return isValid;
+        }
+
+        function clearErrors() {
+            const fields = document.querySelectorAll('#reservaForm input, #reservaForm select');
+            const errors = document.querySelectorAll('.error-message');
+            
+            fields.forEach(field => {
+                field.classList.remove('error-field');
+            });
+            
+            errors.forEach(error => {
+                error.classList.add('hidden');
+            });
+        }
+
+        function updateSubmitButton() {
+            const fields = ['nombre', 'correo', 'fechaEvento', 'tipoEvento', 'ciudad'];
+            const submitBtn = document.getElementById('consultarBtn');
+            
+            let allValid = true;
+            
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const value = field.value.trim();
+                
+                if (!value) {
+                    allValid = false;
+                    return;
+                }
+                
+                // Validación específica para email
+                if (fieldId === 'correo') {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(value)) {
+                        allValid = false;
+                        return;
+                    }
+                }
+                
+                // Validación específica para fecha
+                if (fieldId === 'fechaEvento') {
+                    const selectedDate = new Date(value);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    if (selectedDate < today) {
+                        allValid = false;
+                        return;
+                    }
+                }
+            });
+            
+            if (allValid) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                submitBtn.classList.add('btn-enabled');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+                submitBtn.classList.remove('btn-enabled');
+            }
+        }
+
+        function enviarWhatsApp() {
+            // Validar todos los campos antes de enviar
+            const fields = ['nombre', 'correo', 'fechaEvento', 'tipoEvento', 'ciudad'];
+            let allValid = true;
+            
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const event = { target: field };
+                if (!validateField(event)) {
+                    allValid = false;
+                }
+            });
+            
+            if (!allValid) {
+                return;
+            }
+            
+            // Obtener datos del formulario
+            const nombre = document.getElementById('nombre').value.trim();
+            const correo = document.getElementById('correo').value.trim();
+            const fechaEvento = document.getElementById('fechaEvento').value;
+            const tipoEvento = document.getElementById('tipoEvento').value;
+            const ciudad = document.getElementById('ciudad').value.trim();
+            
+            // Formatear fecha
+            const fecha = new Date(fechaEvento);
+            const fechaFormateada = fecha.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Crear mensaje para WhatsApp
+            const mensaje = `🎉 *NUEVA CONSULTA DE RESERVA* 🎉
+
+📋 *DATOS DEL CLIENTE:*
+👤 Nombre: ${nombre}
+📧 Correo: ${correo}
+📅 Fecha del evento: ${fechaFormateada}
+🎊 Tipo de evento: ${tipoEvento}
+🏙️ Ciudad: ${ciudad}
+
+📦 *PAQUETE SELECCIONADO:*
+${paqueteSeleccionado}
+💰 Precio: ${precioSeleccionado}
+
+¡Hola! Me interesa consultar la disponibilidad para este paquete. ¿Podrías confirmarme si tienen disponibilidad para la fecha indicada?
+
+¡Gracias! 😊`;
+            
+            // Número de WhatsApp
+            const numeroWhatsApp = '593994276282';
+            
+            // Crear URL de WhatsApp
+            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+            
+            // Abrir WhatsApp
+            window.open(urlWhatsApp, '_blank');
+            
+            // Cerrar modal después de enviar
+            setTimeout(() => {
+                closeModal();
+            }, 1000);
+        }
+
+        // Inicializar validación cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            setupFormValidation();
+        });
+        
+        // Portfolio Carousel functionality
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.portfolio-item');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const totalSlides = slides.length;
+        const slidesToShow = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+        const maxIndex = Math.ceil(totalSlides / slidesToShow) - 1;
+        
+        function showSlide(n) {
+            // Handle circular navigation
+            if (n > maxIndex) {
+                slideIndex = 0;
+            } else if (n < 0) {
+                slideIndex = maxIndex;
+            } else {
+                slideIndex = n;
+            }
+            
+            // Update carousel position
+            const carouselInner = document.querySelector('.portfolio-carousel-inner');
+            const slideWidth = 100 / slidesToShow;
+            carouselInner.style.transform = `translateX(-${slideIndex * slideWidth * slidesToShow}%)`;
+            
+            // Update dots
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === slideIndex);
+            });
+        }
+        
+        function moveSlide(step) {
+            showSlide(slideIndex + step);
+        }
+        
+        function currentSlide(n) {
+            showSlide(n);
+        }
+        
+        // Update slidesToShow on window resize
+        window.addEventListener('resize', () => {
+            const newSlidesToShow = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+            if (newSlidesToShow !== slidesToShow) {
+                // Recalculate maxIndex and adjust current position
+                const newMaxIndex = Math.ceil(totalSlides / newSlidesToShow) - 1;
+                slideIndex = Math.min(slideIndex, newMaxIndex);
+                showSlide(slideIndex);
+            }
+        });
+        
+        // Auto slide every 5 seconds for portfolio
+        let portfolioInterval = setInterval(() => {
+            moveSlide(1);
+        }, 5000);
+        
+        // Pause auto-slide when hovering over carousel
+        const portfolioCarousel = document.querySelector('.portfolio-carousel');
+        portfolioCarousel.addEventListener('mouseenter', () => {
+            clearInterval(portfolioInterval);
+        });
+        
+        portfolioCarousel.addEventListener('mouseleave', () => {
+            portfolioInterval = setInterval(() => {
+                moveSlide(1);
+            }, 5000);
+        });
+        
+        // Testimonial carousel functionality
+        let testimonialIndex = 0;
+        const testimonialCards = document.querySelectorAll('.testimonial-card');
+        const testimonialDots = document.querySelectorAll('.testimonial-dot');
+        
+        function showTestimonial(n) {
+            // Handle circular navigation
+            if (n > testimonialCards.length - 1) {
+                testimonialIndex = 0;
+            } else if (n < 0) {
+                testimonialIndex = testimonialCards.length - 1;
+            } else {
+                testimonialIndex = n;
+            }
+            
+            // Update carousel position
+            const testimonialInner = document.querySelector('.testimonial-inner');
+            
+            // Different behavior for mobile and desktop
+            if (window.innerWidth < 768) {
+                testimonialInner.style.transform = `translateX(-${testimonialIndex * 100}%)`;
+            } else {
+                // On desktop, we don't need to slide as all cards are visible
+                testimonialInner.style.transform = 'translateX(0)';
+            }
+            
+            // Update dots
+            testimonialDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === testimonialIndex);
+            });
+        }
+        
+        function moveTestimonial(step) {
+            showTestimonial(testimonialIndex + step);
+        }
+        
+        function currentTestimonial(n) {
+            showTestimonial(n);
+        }
+        
+        // Auto slide testimonials every 6 seconds
+        let testimonialInterval = setInterval(() => {
+            if (window.innerWidth < 768) {
+                moveTestimonial(1);
+            }
+        }, 6000);
+        
+        // Handle window resize for testimonials
+        window.addEventListener('resize', () => {
+            showTestimonial(testimonialIndex);
+        });
+        
+        // Initialize testimonials
+        showTestimonial(0);
+        
+        // Hero slideshow functionality
+        let heroSlideIndex = 0;
+        const heroSlides = document.querySelectorAll('.hero-slide');
+        const totalHeroSlides = heroSlides.length;
+        
+        function showHeroSlide() {
+            // Remove active class from all slides
+            heroSlides.forEach(slide => slide.classList.remove('active'));
+            
+            // Add active class to current slide
+            heroSlides[heroSlideIndex].classList.add('active');
+            
+            // Move to next slide
+            heroSlideIndex = (heroSlideIndex + 1) % totalHeroSlides;
+        }
+        
+        // Initialize hero slideshow
+        showHeroSlide();
+        
+        // Auto slide every 4 seconds for hero
+        setInterval(showHeroSlide, 4000);
+        
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+        function openMobileMenu() {
+            mobileMenu.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                mobileMenuPanel.style.transform = 'translateX(0)';
+            }, 10);
+        }
+
+        function closeMobileMenuFunc() {
+            mobileMenuPanel.style.transform = 'translateX(-100%)';
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function navigateToService(serviceType) {
+            closeMobileMenuFunc();
+            setTimeout(() => {
+                showPackages(serviceType);
+            }, 400);
+        }
+
+        // Event listeners for mobile menu
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
+
+        // Close menu when clicking outside
+        mobileMenu.addEventListener('click', function(e) {
+            if (e.target === mobileMenu) {
+                closeMobileMenuFunc();
+            }
+        });
+
+        // Initialize portfolio carousel
+        showSlide(0);
+        
+        // Handle touch events for mobile swiping - Portfolio
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        portfolioCarousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+        
+        portfolioCarousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+        
+        function handleSwipe() {
+            if (touchEndX < touchStartX) {
+                // Swipe left
+                moveSlide(1);
+            } else if (touchEndX > touchStartX) {
+                // Swipe right
+                moveSlide(-1);
+            }
+        }
+        
+        // Handle touch events for mobile swiping - Testimonials
+        const testimonialCarousel = document.querySelector('.testimonial-carousel');
+        let testimonialTouchStartX = 0;
+        let testimonialTouchEndX = 0;
+        
+        testimonialCarousel.addEventListener('touchstart', (e) => {
+            testimonialTouchStartX = e.changedTouches[0].screenX;
+        }, false);
+        
+        testimonialCarousel.addEventListener('touchend', (e) => {
+            testimonialTouchEndX = e.changedTouches[0].screenX;
+            handleTestimonialSwipe();
+        }, false);
+        
+        function handleTestimonialSwipe() {
+            if (testimonialTouchEndX < testimonialTouchStartX) {
+                // Swipe left
+                moveTestimonial(1);
+            } else if (testimonialTouchEndX > testimonialTouchStartX) {
+                // Swipe right
+                moveTestimonial(-1);
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'997cdd079668825b',t:'MTc2MjAxNTUzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
